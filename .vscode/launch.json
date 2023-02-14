@@ -1,0 +1,16 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "App",
+            "vmArgs": "--module-path ${workspaceFolder}/lib/javafx/lib --add-modules javafx.controls",
+            "projectName": "ENGG-1420-Final-Project_91f84bcf"
+        }
+    ]
+}
