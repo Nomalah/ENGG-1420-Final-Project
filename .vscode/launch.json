@@ -8,9 +8,8 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "App",
-            "vmArgs": "--module-path ${workspaceFolder}/lib/javafx/lib --add-modules javafx.controls",
-            "projectName": "ENGG-1420-Final-Project_91f84bcf"
+            "mainClass": "ca.uoguelph.App",
+            "projectName": "fileprocessingsystem"
         }
     ]
 }

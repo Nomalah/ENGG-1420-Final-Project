@@ -11,5 +11,6 @@
         "javafx/lib/javafx.swing.jar",
         "javafx/lib/javafx.web.jar",
         "javafx/lib/javafx-swt.jar"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
