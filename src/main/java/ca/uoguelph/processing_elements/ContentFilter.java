@@ -13,6 +13,6 @@ public class ContentFilter implements ProcessingElement {
     }
 
     public void print(){
-        System.out.println("Content");
+        System.out.println("ContentFilter");
     }
 }
