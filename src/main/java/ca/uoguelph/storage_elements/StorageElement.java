@@ -25,4 +25,5 @@ public interface StorageElement {
     public String read(); // Read entire file verbatim
     public long length();
     public void rename(String name); // rename file
+    public void print();
 }

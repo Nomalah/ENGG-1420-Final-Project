@@ -2,11 +2,16 @@ package ca.uoguelph.processing_elements;
 
 import ca.uoguelph.storage_elements.StorageElement;
 import java.util.ArrayList;
-import org.json.JSONArray;
 
 public class Rename implements ProcessingElement {
-    public ArrayList<StorageElement> process(ArrayList<StorageElement> input, JSONArray parameters) {
-        return new ArrayList<StorageElement>();
+    public Rename(String suffix) {
+
     }
-    
+    public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
+        return input;
+    }
+
+    public void print(){
+        System.out.println("Rename");
+    }
 }

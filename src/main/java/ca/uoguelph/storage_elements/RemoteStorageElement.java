@@ -2,7 +2,7 @@ package ca.uoguelph.storage_elements;
 
 public class RemoteStorageElement implements StorageElement {
     public RemoteStorageElement(String repo_id, String entry_id) {
-        
+
     }
 
     public boolean isDirectory() {
@@ -14,7 +14,7 @@ public class RemoteStorageElement implements StorageElement {
     }
 
     public String name() {
-        return "LOCALSTORAGEELEMENT";
+        return "REMOTESTORAGEELEMENT";
     }
 
     public void rename(String name) {
@@ -23,5 +23,9 @@ public class RemoteStorageElement implements StorageElement {
 
     public String read() {
         return "NOTHING IN FILE - NOT IMPLEMENTED";
+    }
+
+    public void print() {
+
     }
 }

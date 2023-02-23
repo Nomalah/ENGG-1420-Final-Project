@@ -2,14 +2,17 @@ package ca.uoguelph.processing_elements;
 
 import ca.uoguelph.storage_elements.StorageElement;
 import java.util.ArrayList;
-import org.json.JSONArray;
 
 public class NameFilter implements ProcessingElement {
-    public ArrayList<StorageElement> process(ArrayList<StorageElement> input, JSONArray parameters) {
-        return byName(input, "");
+    public NameFilter(String search_key) {
+
     }
 
-    static ArrayList<StorageElement> byName(ArrayList<StorageElement> input, String search_key) {
-        return new ArrayList<StorageElement>();
+    public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
+        return input;
+    }
+
+    public void print(){
+        System.out.println("NameFilter");
     }
 }

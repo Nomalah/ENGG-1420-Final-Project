@@ -24,4 +24,8 @@ public class LocalStorageElement implements StorageElement {
     public String read() {
         return "NOTHING IN FILE - NOT IMPLEMENTED";
     }
+
+    public void print() {
+        
+    }
 }

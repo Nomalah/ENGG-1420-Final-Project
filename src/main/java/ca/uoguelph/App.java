@@ -10,10 +10,10 @@ public final class App {
         // Hardcode path
         try {
             System.out.println("Creating Scenario");
-            ProcessingScenario scenario = new ProcessingScenario("example.json");
+            ProcessingScenario scenario = new ProcessingScenario("example.json", true);
             try {
                 System.out.println("Executing Scenario");
-                scenario.executeScenario(true);
+                scenario.executeScenario();
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("Error parsing scenario");
