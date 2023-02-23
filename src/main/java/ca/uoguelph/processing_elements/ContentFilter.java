@@ -4,9 +4,12 @@ import ca.uoguelph.storage_elements.StorageElement;
 import java.util.ArrayList;
 import org.json.JSONArray;
 
-public class Print implements ProcessingElement {
+public class ContentFilter implements ProcessingElement {
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input, JSONArray parameters) {
-        return input;
+        return byContent(input, "");
     }
 
+    static ArrayList<StorageElement> byContent(ArrayList<StorageElement> input, String search_key) {
+        return new ArrayList<StorageElement>();
+    }
 }
