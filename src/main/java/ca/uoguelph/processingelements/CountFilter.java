@@ -1,18 +1,20 @@
-package ca.uoguelph.processing_elements;
+package ca.uoguelph.processingelements;
 
-import ca.uoguelph.storage_elements.StorageElement;
+import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
 
 public class CountFilter implements ProcessingElement {
-    public CountFilter(String search_key, int min_count) {
+    public CountFilter(String searchKey, int minCount) {
 
     }
 
+    @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         return input;
     }
 
-    public void print(){
+    @Override
+    public void print() {
         System.out.println("CountFilter");
     }
 }

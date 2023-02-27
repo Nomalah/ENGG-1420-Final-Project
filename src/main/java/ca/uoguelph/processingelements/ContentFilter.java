@@ -1,18 +1,20 @@
-package ca.uoguelph.processing_elements;
+package ca.uoguelph.processingelements;
 
-import ca.uoguelph.storage_elements.StorageElement;
+import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
 
 public class ContentFilter implements ProcessingElement {
-    public ContentFilter(String search_key) {
+    public ContentFilter(String searchKey) {
 
     }
 
+    @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         return input;
     }
 
-    public void print(){
+    @Override
+    public void print() {
         System.out.println("ContentFilter");
     }
 }

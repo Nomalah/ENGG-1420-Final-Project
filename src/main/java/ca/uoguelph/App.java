@@ -1,9 +1,8 @@
 package ca.uoguelph;
 
+import ca.uoguelph.processingscenario.ProcessingScenario;
 import java.io.IOException;
 import java.text.ParseException;
-
-import ca.uoguelph.processing_scenario.ProcessingScenario;
 
 public final class App {
     public static void main(String[] args) {
