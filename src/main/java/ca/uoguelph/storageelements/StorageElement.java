@@ -17,7 +17,7 @@ public interface StorageElement {
 
     void print();
 
-    public static StorageElement create(JSONObject elementDescriptionJson) throws JSONException, ParseException {
+    static StorageElement create(JSONObject elementDescriptionJson) throws JSONException, ParseException {
         switch (elementDescriptionJson.getString("type")) {
             case "local": {
                 String filePath = elementDescriptionJson.getString("path");

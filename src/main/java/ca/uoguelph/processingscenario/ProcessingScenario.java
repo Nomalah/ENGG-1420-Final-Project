@@ -25,7 +25,8 @@ public class ProcessingScenario {
         }
     }
 
-    private ArrayList<StorageElement> parseInputStorageEntries(JSONArray inputStorageEntries) throws ParseException, JSONException {
+    private ArrayList<StorageElement> parseInputStorageEntries(JSONArray inputStorageEntries)
+            throws ParseException, JSONException {
         ArrayList<StorageElement> result = new ArrayList<>();
         for (int i = 0; i < inputStorageEntries.length(); i++) {
             JSONObject storageElementJson = inputStorageEntries.getJSONObject(i);

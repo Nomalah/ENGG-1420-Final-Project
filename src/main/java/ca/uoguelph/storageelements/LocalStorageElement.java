@@ -7,7 +7,7 @@ public class LocalStorageElement implements StorageElement {
     @Override
     public boolean isDirectory() {
         return false;
-    } 
+    }
 
     @Override
     public long length() {

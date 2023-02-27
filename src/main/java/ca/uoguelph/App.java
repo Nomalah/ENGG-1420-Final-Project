@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public final class App {
+    private App() {}
+
     public static void main(String[] args) {
         // Hardcode path
         try {
