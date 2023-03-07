@@ -6,27 +6,37 @@ import java.lang.IllegalStateException;
 import com.laserfiche.api.client.model.AccessKey;
 import com.laserfiche.repository.api.RepositoryApiClient;
 import com.laserfiche.repository.api.RepositoryApiClientImpl;
+import com.laserfiche.repository.api.clients.EntriesClient;
+import com.laserfiche.repository.api.clients.impl.model.Entry;
+import com.laserfiche.repository.api.clients.impl.model.EntryType;
+import com.laserfiche.repository.api.clients.impl.model.ODataValueContextOfIListOfEntry;
 
 public class RemoteStorageElement implements StorageElement {
     private static AccessKey accessKey = null;
-    private static RepositoryApiClient client = null;
-    public static void initLaserfisheClient(String pricipalServiceKey, String base64AccessKey) throws IllegalStateException {
-        if (client != null || accessKey != null) {
+    private static RepositoryApiClient repoClient = null;
+    private static EntriesClient entriesClient = null;
+
+    private final String repoId = null;
+    private Entry entry;
+
+    public static void initLaserficheClient(String principalServiceKey, String base64AccessKey) throws IllegalStateException {
+        if (repoClient != null)
             throw new IllegalStateException("RemoteStorageElement API client has already been initialized");
-        }
         accessKey = AccessKey.createFromBase64EncodedAccessKey(base64AccessKey);
-        client = RepositoryApiClientImpl.createFromAccessKey(pricipalServiceKey, accessKey);
+        repoClient = RepositoryApiClientImpl.createFromAccessKey(principalServiceKey, accessKey);
+        entriesClient = repoClient.getEntriesClient();
     }
 
     public RemoteStorageElement(String repoId, Integer entryId) {
-        if (client == null || accessKey == null) {
+        if (repoClient == null)
             throw new IllegalStateException("RemoteStorageElement API client has not been initialized");
-        }
+        repoId = repoId;
+        entry = entriesClient.getEntry(repoId, entryId, null).join();
     }
 
     @Override
     public boolean isDirectory() {
-        return false;
+        return entry.getEntryType() == EntryType.FOLDER;
     }
 
     @Override
@@ -36,11 +46,12 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public String name() {
-        return "REMOTESTORAGEELEMENT";
+        return entry.getName();
     }
 
     @Override
     public void rename(String name) {
+        entry.name(name);
     }
 
     @Override
@@ -54,10 +65,12 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public ArrayList<StorageElement> getChildStorageElements() {
-        if (!isDirectory()) {
+        if (!isDirectory())
             return new ArrayList<>();
-        }
 
-        return new ArrayList<>(); // Get all child files/folders
+        ODataValueContextOfIListOfEntry result = entriesClient
+            .getEntryListing(repoId, entry.getId(), true, null, null, null, null, null, "name", null, null, null).join();
+
+        return new ArrayList<>();
     }
 }
