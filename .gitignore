@@ -2,3 +2,4 @@ javafx/*
 bin
 target
 src/main/java/ca/uoguelph/Sample.java
+.idea
