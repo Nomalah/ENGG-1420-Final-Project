@@ -1,6 +1,8 @@
 package ca.uoguelph.storageelements;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,6 +10,8 @@ public interface StorageElement {
     String name();
 
     boolean isDirectory();
+
+    ArrayList<StorageElement> getChildStorageElements();
 
     String read(); // Read entire file verbatim
 
@@ -25,7 +29,7 @@ public interface StorageElement {
             }
             case "remote": {
                 String repoId = elementDescriptionJson.getString("repositoryId");
-                String entryId = elementDescriptionJson.getString("entryId");
+                int entryId = elementDescriptionJson.getInt("entryId");
                 return new RemoteStorageElement(repoId, entryId);
             }
             default:

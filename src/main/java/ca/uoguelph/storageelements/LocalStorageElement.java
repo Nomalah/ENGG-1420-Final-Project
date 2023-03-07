@@ -1,5 +1,7 @@
 package ca.uoguelph.storageelements;
 
+import java.util.ArrayList;
+
 public class LocalStorageElement implements StorageElement {
     public LocalStorageElement(String filePath) {
     }
@@ -30,5 +32,14 @@ public class LocalStorageElement implements StorageElement {
 
     @Override
     public void print() {
+    }
+
+    @Override
+    public ArrayList<StorageElement> getChildStorageElements() {
+        if (!isDirectory()) {
+            return new ArrayList<>();
+        }
+
+        return new ArrayList<>(); // Get all child files/folders
     }
 }
