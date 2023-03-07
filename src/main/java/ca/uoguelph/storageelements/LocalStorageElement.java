@@ -1,14 +1,30 @@
 package ca.uoguelph.storageelements;
 
+import java.net.URI;
+import java.nio.file.*;
 import java.util.ArrayList;
 
 public class LocalStorageElement implements StorageElement {
+
+    private String filePath;
+
     public LocalStorageElement(String filePath) {
+        this.filePath = filePath;
+        System.out.println(this.isDirectory());
     }
 
     @Override
     public boolean isDirectory() {
-        return false;
+        Path path = (Path) Paths.get(this.filePath);
+        if ((Files.exists(path)) == false) {
+            return false;
+        } else {
+            if ((Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) == true) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     @Override
@@ -18,7 +34,7 @@ public class LocalStorageElement implements StorageElement {
 
     @Override
     public String name() {
-        return "LOCALSTORAGEELEMENT";
+        return this.filePath;
     }
 
     @Override

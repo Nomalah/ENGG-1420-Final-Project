@@ -6,12 +6,12 @@
             "input_entries": [
                 {
                     "type": "local",
-                    "path": "c:\\sample\\text_files"
+                    "path": "C:\\Users\\nmutl\\OneDrive\\Documents\\TestFileFinalProj"
                 },
                 {
                     "type": "remote",
                     "repositoryId": "repository id",
-                    "entryId": "entry id"
+                    "entryId": "1"
                 }
             ],
             "parameters": [
