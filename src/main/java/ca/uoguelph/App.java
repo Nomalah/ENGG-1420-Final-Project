@@ -1,13 +1,20 @@
 package ca.uoguelph;
 
 import ca.uoguelph.processingscenario.ProcessingScenario;
+import ca.uoguelph.storageelements.RemoteStorageElement;
+import ca.uoguelph.storageelements.StorageElement;
+
 import java.io.IOException;
+import java.rmi.Remote;
 import java.text.ParseException;
 
 public final class App {
     private App() {}
 
     public static void main(String[] args) {
+        // Temporary initialize Laserfiche client location
+        RemoteStorageElement.initLaserficheClient("replace with service key", "replace with base64 key");
+
         // Hardcode path
         try {
             System.out.println("Creating Scenario");

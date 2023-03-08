@@ -1,25 +1,38 @@
 package ca.uoguelph.storageelements;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.laserfiche.repository.api.clients.impl.model.Entry;
 
 public interface StorageElement {
     String name();
 
     boolean isDirectory();
 
-    ArrayList<StorageElement> getChildStorageElements();
-
-    String read(); // Read entire file verbatim
+    String read() throws IOException; // Read entire file verbatim
 
     long length();
 
     void rename(String name); // rename file
 
+    ArrayList<StorageElement> getChildStorageElements() throws ParseException;
+
     void print();
+
+    // Temporary code for child entries
+    static StorageElement create(String type, String parent, Entry entry) throws ParseException {
+        switch (type) {
+            case "local": {}
+            case "remote": {
+                return new RemoteStorageElement(parent, entry.getId());
+            }
+            default:
+                throw new ParseException("Unknown type of storage element", 0);
+        }
+    }
 
     static StorageElement create(JSONObject elementDescriptionJson) throws JSONException, ParseException {
         switch (elementDescriptionJson.getString("type")) {
