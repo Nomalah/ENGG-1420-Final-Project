@@ -22,18 +22,6 @@ public interface StorageElement {
 
     void print();
 
-    // Temporary code for child entries
-    static StorageElement create(String type, String parent, Entry entry) throws ParseException {
-        switch (type) {
-            case "local": {}
-            case "remote": {
-                return new RemoteStorageElement(parent, entry.getId());
-            }
-            default:
-                throw new ParseException("Unknown type of storage element", 0);
-        }
-    }
-
     static StorageElement create(JSONObject elementDescriptionJson) throws JSONException, ParseException {
         switch (elementDescriptionJson.getString("type")) {
             case "local": {
