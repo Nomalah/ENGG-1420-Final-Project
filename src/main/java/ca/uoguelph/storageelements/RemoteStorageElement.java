@@ -66,9 +66,13 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public long length() {
-        // Stuff taken from Laserfiche unit tests
         File file = createFileFromEntry();
-        return file.length();
+        long length = file.length();
+
+        // Delete the temporary file
+        file.delete();
+
+        return length;
     }
 
     @Override
