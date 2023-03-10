@@ -18,7 +18,6 @@ public class List implements ProcessingElement {
         for (int i = 0; i < input.size(); i++) {
             if (input.get(i).isDirectory()) {
                 ArrayList<StorageElement> childElements = input.get(i).getChildStorageElements();
-
                 if (maxFolderEntries < childElements.size()) {
                     for (int j = 0; j < maxFolderEntries; j++) {
                         output.add(childElements.get(j));

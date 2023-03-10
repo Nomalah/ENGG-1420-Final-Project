@@ -40,16 +40,13 @@ public class RemoteStorageElement implements StorageElement {
     }
 
     @Override
-    public void rename(String name) {
-    }
-
-    @Override
     public String read() {
         return "NOTHING IN FILE - NOT IMPLEMENTED";
     }
 
     @Override
     public void print() {
+        System.out.println("null");
     }
 
     @Override
