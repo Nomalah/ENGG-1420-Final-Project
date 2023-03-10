@@ -22,6 +22,11 @@
             ]
         },
         {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
             "type": "LengthFilter",
             "input_entries": [],
             "parameters": [

@@ -17,8 +17,6 @@ public interface StorageElement {
 
     long length();
 
-    void rename(String name); // rename file
-
     void print();
 
     static StorageElement create(JSONObject elementDescriptionJson) throws JSONException, ParseException {
