@@ -32,7 +32,7 @@ public class ProcessingScenario {
             JSONObject storageElementJson = inputStorageEntries.getJSONObject(i);
             result.add(StorageElement.create(storageElementJson));
             if (this.verbose) {
-                System.out.printf("Added storage element: %s%n", result.get(i).name());
+                System.out.printf("Added storage element: %s : ", result.get(i).name());
                 result.get(i).print();
             }
         }
@@ -43,13 +43,19 @@ public class ProcessingScenario {
         ArrayList<StorageElement> currentElements = new ArrayList<>();
         JSONArray processingElementsJson = scenario.getJSONArray("processing_elements");
         for (int i = 0; i < processingElementsJson.length(); i++) {
+            System.out.println("Parsing processing element... ");
             JSONObject processingElementJson = processingElementsJson.getJSONObject(i);
+
+            System.out.println("Parsing input entries...");
             JSONArray inputStorageElements = processingElementJson.getJSONArray("input_entries");
             currentElements.addAll(parseInputStorageEntries(inputStorageElements)); // Add any input entries to the list
             ProcessingElement processingElement = ProcessingElement.create(processingElementJson);
+
             if (this.verbose) {
+                System.out.print("Executing processing element: ");
                 processingElement.print();
             }
+
             currentElements = processingElement.process(currentElements);
         }
     }

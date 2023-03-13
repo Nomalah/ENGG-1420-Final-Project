@@ -17,8 +17,6 @@ public interface StorageElement {
 
     long length();
 
-    void rename(String name); // rename file
-
     void print();
 
     static StorageElement create(JSONObject elementDescriptionJson) throws JSONException, ParseException {
@@ -29,7 +27,7 @@ public interface StorageElement {
             }
             case "remote": {
                 String repoId = elementDescriptionJson.getString("repositoryId");
-                int entryId = elementDescriptionJson.getInt("entryId");
+                int entryId = Integer.parseInt(elementDescriptionJson.getString("entryId"));
                 return new RemoteStorageElement(repoId, entryId);
             }
             default:
