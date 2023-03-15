@@ -12,13 +12,13 @@ public interface StorageElement {
 
     boolean isDirectory();
 
-    String read() throws IOException; // Read entire file verbatim
+    String read(); // Read entire file verbatim
 
     long length();
 
     void rename(String name); // rename file
 
-    ArrayList<StorageElement> getChildStorageElements() throws ParseException;
+    ArrayList<StorageElement> getChildStorageElements();
 
     void print();
 

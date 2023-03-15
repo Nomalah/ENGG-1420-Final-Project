@@ -6,10 +6,8 @@ import com.laserfiche.repository.api.RepositoryApiClientImpl;
 import com.laserfiche.repository.api.clients.EntriesClient;
 import com.laserfiche.repository.api.clients.impl.model.Entry;
 import com.laserfiche.repository.api.clients.impl.model.ODataValueContextOfIListOfEntry;
-import org.json.JSONObject;
 
 import java.io.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -82,36 +80,40 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public void rename(String name) {
-        entry.name(name);
+        System.out.println("Cannot rename remote files");
     }
 
     @Override
-    public String read() throws IOException {
-        File file = createFileFromEntry();
+    public String read() {
+        try {
+            File file = createFileFromEntry();
 
-        // Read the file
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        StringBuilder content = new StringBuilder();
-        String currentLine = null;
+            // Read the file
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            StringBuilder content = new StringBuilder();
+            String currentLine = null;
 
-        while ((currentLine = reader.readLine()) != null)
-            content.append(currentLine + "\n");
+            while ((currentLine = reader.readLine()) != null)
+                content.append(currentLine + "\n");
 
-        // Delete the cached file
-        file.delete();
+            // Delete the cached file
+            file.delete();
 
-        // Return the content
-        return content.toString();
+            // Return the content
+            return content.toString();
+        } catch (IOException e) {
+            return "Could not read file";
+        }
     }
 
     @Override
     public void print() {
-        String format = "%s\n\tEntry ID: %d\n\tAbsolute Path: %s";
+        String format = "RemoteStorageElement - %s\n\tEntry ID: %d\n\tAbsolute Path: %s";
         System.out.printf((format) + "%n", entry.getName(), entry.getId(), entry.getFullPath());
     }
 
     @Override
-    public ArrayList<StorageElement> getChildStorageElements() throws ParseException {
+    public ArrayList<StorageElement> getChildStorageElements() {
         if (!isDirectory())
             return new ArrayList<>();
 
@@ -122,11 +124,8 @@ public class RemoteStorageElement implements StorageElement {
         ArrayList<StorageElement> elements = new ArrayList<>();
 
         // Convert all the entries to StorageElements and add them to the ArrayList
-        String jsonFormat = "\"{\"type\": \"remote\", \"repositoryId\": \"%s\", \"entryId\": \"%d\"}\"";
-        for (Entry entry : entries) {
-            JSONObject elementJSON = (JSONObject) JSONObject.stringToValue(jsonFormat.formatted(repoId, entry.getId()));
-            elements.add(StorageElement.create(elementJSON));
-        }
+        for (Entry entry : entries)
+            elements.add(new RemoteStorageElement(this.repoId, entry.getId()));
 
         return elements;
     }
