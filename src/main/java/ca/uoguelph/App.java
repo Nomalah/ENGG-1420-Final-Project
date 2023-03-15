@@ -2,10 +2,8 @@ package ca.uoguelph;
 
 import ca.uoguelph.processingscenario.ProcessingScenario;
 import ca.uoguelph.storageelements.RemoteStorageElement;
-import ca.uoguelph.storageelements.StorageElement;
 
 import java.io.IOException;
-import java.rmi.Remote;
 import java.text.ParseException;
 
 public final class App {

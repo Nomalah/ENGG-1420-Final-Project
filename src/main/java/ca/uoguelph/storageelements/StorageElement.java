@@ -1,11 +1,9 @@
 package ca.uoguelph.storageelements;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.laserfiche.repository.api.clients.impl.model.Entry;
 
 public interface StorageElement {
     String name();
