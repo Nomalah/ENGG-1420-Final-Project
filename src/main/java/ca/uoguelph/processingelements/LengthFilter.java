@@ -63,6 +63,9 @@ public class LengthFilter implements ProcessingElement {
             break;
             }
         }
+            if (element.isDirectory()) {
+                break;
+            }
     return output;
                 }
 
