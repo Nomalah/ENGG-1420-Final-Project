@@ -25,26 +25,16 @@ public class LengthFilter implements ProcessingElement {
 
             
             Case "EQ":
-<<<<<<< Updated upstream
                     if (element.getLength() == operator){
                  output.add(entry);
             }
                     break;
             Case "NEQ":
                     if (element.getLength() != operator) {
-=======
-                if (Target_length == operator){
-                output.add(entry);
-            }
-                break;
-            Case "NEQ":
-                if (Target_length != operator) {
->>>>>>> Stashed changes
                 output.add(entry);
             }
             break;
             Case "GT":
-<<<<<<< Updated upstream
                     if (element.getLength() < operator) {
                 output.add(entry);
                 break;
@@ -64,36 +54,11 @@ public class LengthFilter implements ProcessingElement {
                         
                     
                     default:
-=======
-                if (Target_length < operator) {
-                output.add(entry);
-                {
-                    break;
-                    Case "GTE":
-                if (Target_length <= operator) {
-                        output.add(entry);
-                    }
-                    break;
-                    Case "LT":
-                if (Target_length > operator) {
-                        output.add(entry);
-                    }
-                    break;
-                    Case "LTE":
-                if (Target_length >= operator) {
-                        output.add(entry);
-                        break;
-
-                    
-                
-                default:
->>>>>>> Stashed changes
                     System.out.println("The operator does not have a value");
                     break;
             }
         }
     return output;
-<<<<<<< Updated upstream
                 }
 
                 @Override
@@ -106,17 +71,3 @@ public class LengthFilter implements ProcessingElement {
         System.out.println("LengthFilter");
                 }
             }
-=======
-            }
-
-            @Override
-            public void print
-                    
-                    
-            
-                () {
-        System.out.println("LengthFilter");
-            }
-
-        }
->>>>>>> Stashed changes
