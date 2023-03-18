@@ -12,6 +12,9 @@ public class NameFilter implements ProcessingElement {
     @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> output = new ArrayList<>();
+        
+        this.searchKey = searchKey.toUpperCase();
+        
         for (int i = 0; i < input.size(); i++){
             if (input.get(i).name().contains(this.searchKey)) {
                 output.add(input.get(i));
