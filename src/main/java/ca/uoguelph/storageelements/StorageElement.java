@@ -37,5 +37,5 @@ public interface StorageElement {
         }
     }
 
-    public Object toUpperCase();
+   
 }
