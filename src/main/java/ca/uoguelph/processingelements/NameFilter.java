@@ -16,7 +16,7 @@ public class NameFilter implements ProcessingElement {
         this.searchKey = searchKey.toUpperCase();
         
         for (int i = 0; i < input.size(); i++){
-            if (input.get(i).name().contains(this.searchKey)) {
+            if (input.get(i).name().toUpperCase().contains(this.searchKey)) {
                 output.add(input.get(i));
             }
         }
