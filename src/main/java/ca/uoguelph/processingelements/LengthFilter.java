@@ -18,7 +18,7 @@ public class LengthFilter implements ProcessingElement {
         ArrayList<StorageElement> output = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
             StorageElement element = input.get(i);
-            if (element.isFile()) {
+            if !(element.isDirectory()) {
             switch (operator) {
 
             
