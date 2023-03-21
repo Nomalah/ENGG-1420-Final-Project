@@ -2,6 +2,7 @@ package ca.uoguelph;
 
 import ca.uoguelph.processingscenario.ProcessingScenario;
 import ca.uoguelph.storageelements.RemoteStorageElement;
+
 import java.io.IOException;
 import java.text.ParseException;
 
