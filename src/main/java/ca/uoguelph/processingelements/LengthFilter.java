@@ -18,60 +18,60 @@ public class LengthFilter implements ProcessingElement {
         ArrayList<StorageElement> output = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
             StorageElement element = input.get(i);
-            if !(element.isDirectory()) {
-            switch (operator) {
+            {
+                switch (operator) {
 
-            
-            case "EQ":
-                    if (element.getLength() == Target_length){
-                 output.add(entry);
-            }
-                break;
-            
-            case "NEQ":
-                    if (element.getLength() != Target_length) {
-                output.add(entry);
-            }
-                break;
-            
-            case "GT":
-                    if (element.getLength() < Target_length) {
-                output.add(entry);
-            }
-                break;
-           
-            case "GTE":
-                    if (element.getLength() <= Target_length) {
-                output.add(entry);
-            }
-                break;
-                    
-            case "LT":
-                    if (element.getLength() > Target_length) {
-                output.add(entry);
-            }
-                 break;
-                       
-            case "LTE":
-                    if (element.getLength() >= Target_length) {
-                output.add(entry);
-            }
-                break;
+                    case "EQ":
+                        if (element.length() == Target_length) {
+                            output.add(element);
+                        }
+                        break;
 
-            default:
-            System.out.println("The operator does not have a value");
-            break;
+                    case "NEQ":
+                        if (element.length() != Target_length) {
+                            output.add(element);
+                        }
+                        break;
+
+                    case "GT":
+                        if (element.length() < Target_length) {
+                            output.add(element);
+                        }
+                        break;
+
+                    case "GTE":
+                        if (element.length() <= Target_length) {
+                            output.add(element);
+                        }
+                        break;
+
+                    case "LT":
+                        if (element.length() > Target_length) {
+                            output.add(element);
+                        }
+                        break;
+
+                    case "LTE":
+                        if (element.length() >= Target_length) {
+                            output.add(element);
+                        }
+                        break;
+
+                    default:
+                        System.out.println("The operator does not have a value");
+                        break;
+                }
             }
-        }
             if (element.isDirectory()) {
                 break;
             }
-    return output;
-                }
-
-                
-                
-                    () {
-        System.out.println("LengthFilter");
-                }
-            
+            return output;
+        }
+        void print
+        
+        
+        
+        
+            () { 
+            System.out.println("LengthFilter");
+        }

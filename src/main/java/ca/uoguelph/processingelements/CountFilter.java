@@ -11,15 +11,15 @@ public class CountFilter implements ProcessingElement {
     public CountFilter(String searchKey, int minCount) {
 
         this.searchKey = searchKey;
-        this.minCount = minCount;
         minCount = Math.max(minCount, 0);
+        this.minCount = minCount;
     }
 
     @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> countOutput = new ArrayList<>();
         for (StorageElement element : input) {
-            if (!(element.isDirectory()) && countOccurances(element.name(), searchKey) >= minCount)  {
+            if (!(element.isDirectory()) && countOccurances(element.read(), searchKey) >= minCount) {
                 countOutput.add(element);
             }
 
@@ -33,6 +33,9 @@ public class CountFilter implements ProcessingElement {
     }
 
     private int countOccurances(String name, String searchKey) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    int count = 0;
+    
+    
+    count ++
+    return count;
 }
