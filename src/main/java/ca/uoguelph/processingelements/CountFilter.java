@@ -19,23 +19,23 @@ public class CountFilter implements ProcessingElement {
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> countOutput = new ArrayList<>();
         for (StorageElement element : input) {
-            if (!(element.isDirectory()) && countOccurances(element.read(), searchKey) >= minCount) {
-                countOutput.add(element);
+            if (!element.isDirectory()) {
+                String[] counted = element.read().split(this.searchKey);
+                int count;
+                count = counted.length - 1;
+
+                if (count > minCount) {
+                    countOutput.add(element);
+                }
+
             }
 
+            return countOutput;
         }
-        return countOutput;
-    }
 
-    @Override
-    public void print() {
+        @Override
+        public void print
+        
+            () {
         System.out.println("CountFilter");
-    }
-
-    private int countOccurances(String name, String searchKey) {
-        int count;
-        String[] counted = name.split(searchKey);
-        count = counted.length - 1;
-        return count;
-    }
-}
+        }
