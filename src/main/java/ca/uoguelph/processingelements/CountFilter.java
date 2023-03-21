@@ -24,7 +24,7 @@ public class CountFilter implements ProcessingElement {
                 int count;
                 count = counted.length - 1;
 
-                if (count > minCount) {
+                if (count >= minCount) {
                     countOutput.add(element);
                 }
 
@@ -35,6 +35,7 @@ public class CountFilter implements ProcessingElement {
 
         @Override
         public void print
+        
         
             () {
         System.out.println("CountFilter");
