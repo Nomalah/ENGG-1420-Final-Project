@@ -19,7 +19,7 @@ public class CountFilter implements ProcessingElement {
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> countOutput = new ArrayList<>();
         for (StorageElement element : input) {
-            if (element.isFile() && countOccurances(element.getName(), searchKey) >= minCount)  {
+            if (!(element.isDirectory()) && countOccurances(element.name(), searchKey) >= minCount)  {
                 countOutput.add(element);
             }
 
@@ -30,5 +30,9 @@ public class CountFilter implements ProcessingElement {
     @Override
     public void print() {
         System.out.println("CountFilter");
+    }
+
+    private int countOccurances(String name, String searchKey) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
