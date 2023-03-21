@@ -10,9 +10,6 @@ public final class App {
     private App() {}
 
     public static void main(String[] args) {
-        // Temporary initialize Laserfiche client location
-        RemoteStorageElement.initLaserficheClient("replace with service key", "replace with base64 key");
-
         // Hardcode path
         RemoteStorageElement.initLaserfisheClient("bbCFNpkD2vPdVMvsT-JX", "ewoJImN1c3RvbWVySWQiOiAiMTQwMTM1OTIzOCIsCgkiY2xpZW50SWQiOiAiYzdhMThlYWUtNGRhYi00OTk4LTllNzUtN2ZhOTdjNmZlMzdlIiwKCSJkb21haW4iOiAibGFzZXJmaWNoZS5jYSIsCgkiandrIjogewoJCSJrdHkiOiAiRUMiLAoJCSJjcnYiOiAiUC0yNTYiLAoJCSJ1c2UiOiAic2lnIiwKCQkia2lkIjogIlJ6Wkxrbzh2WWE0NEhPYzJ6T0djdld2ckNEYWRTRTJ1WkdTbDlDdmpRSmsiLAoJCSJ4IjogImJvRmJkeVBFbU96OGJ4cXdjaVltNDcwSjdDMXQzMWZhUmRwZ3hkdDNsMXMiLAoJCSJ5IjogIjZUT2M2QW82MFJjNVRyR2RfTXRiN3Q4UnJfM1ZPOWRtOEZyeUtWVllfemsiLAoJCSJkIjogIkVZaklmWUc5bjZyWUhpT1F3ejJHMWZxSG9fVURUc0p5eFFXSnRxNmxLRjQiLAoJCSJpYXQiOiAxNjc3Mjk3ODg4Cgl9Cn0");
         try {
