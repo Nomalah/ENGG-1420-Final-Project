@@ -11,7 +11,7 @@ public final class App {
 
     public static void main(String[] args) {
         // Hardcode path
-        RemoteStorageElement.initLaserfisheClient("bbCFNpkD2vPdVMvsT-JX", "ewoJImN1c3RvbWVySWQiOiAiMTQwMTM1OTIzOCIsCgkiY2xpZW50SWQiOiAiYzdhMThlYWUtNGRhYi00OTk4LTllNzUtN2ZhOTdjNmZlMzdlIiwKCSJkb21haW4iOiAibGFzZXJmaWNoZS5jYSIsCgkiandrIjogewoJCSJrdHkiOiAiRUMiLAoJCSJjcnYiOiAiUC0yNTYiLAoJCSJ1c2UiOiAic2lnIiwKCQkia2lkIjogIlJ6Wkxrbzh2WWE0NEhPYzJ6T0djdld2ckNEYWRTRTJ1WkdTbDlDdmpRSmsiLAoJCSJ4IjogImJvRmJkeVBFbU96OGJ4cXdjaVltNDcwSjdDMXQzMWZhUmRwZ3hkdDNsMXMiLAoJCSJ5IjogIjZUT2M2QW82MFJjNVRyR2RfTXRiN3Q4UnJfM1ZPOWRtOEZyeUtWVllfemsiLAoJCSJkIjogIkVZaklmWUc5bjZyWUhpT1F3ejJHMWZxSG9fVURUc0p5eFFXSnRxNmxLRjQiLAoJCSJpYXQiOiAxNjc3Mjk3ODg4Cgl9Cn0");
+        RemoteStorageElement.initLaserficheClient("bbCFNpkD2vPdVMvsT-JX", "ewoJImN1c3RvbWVySWQiOiAiMTQwMTM1OTIzOCIsCgkiY2xpZW50SWQiOiAiYzdhMThlYWUtNGRhYi00OTk4LTllNzUtN2ZhOTdjNmZlMzdlIiwKCSJkb21haW4iOiAibGFzZXJmaWNoZS5jYSIsCgkiandrIjogewoJCSJrdHkiOiAiRUMiLAoJCSJjcnYiOiAiUC0yNTYiLAoJCSJ1c2UiOiAic2lnIiwKCQkia2lkIjogIlJ6Wkxrbzh2WWE0NEhPYzJ6T0djdld2ckNEYWRTRTJ1WkdTbDlDdmpRSmsiLAoJCSJ4IjogImJvRmJkeVBFbU96OGJ4cXdjaVltNDcwSjdDMXQzMWZhUmRwZ3hkdDNsMXMiLAoJCSJ5IjogIjZUT2M2QW82MFJjNVRyR2RfTXRiN3Q4UnJfM1ZPOWRtOEZyeUtWVllfemsiLAoJCSJkIjogIkVZaklmWUc5bjZyWUhpT1F3ejJHMWZxSG9fVURUc0p5eFFXSnRxNmxLRjQiLAoJCSJpYXQiOiAxNjc3Mjk3ODg4Cgl9Cn0");
         try {
             System.out.println("Creating Scenario");
             ProcessingScenario scenario = new ProcessingScenario("example.json", true);
@@ -26,6 +26,6 @@ public final class App {
             e.printStackTrace();
             System.out.println("Error reading scenario file");
         }
-        
+
     }
 }
