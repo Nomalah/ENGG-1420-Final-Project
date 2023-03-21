@@ -33,9 +33,9 @@ public class CountFilter implements ProcessingElement {
     }
 
     private int countOccurances(String name, String searchKey) {
-    int count = 0;
-    
-    
-    count ++
-    return count;
+        int count;
+        String[] counted = name.split("searchKey", 1000000000);
+        count = counted.length - 1;
+        return count;
+    }
 }
