@@ -26,7 +26,7 @@ public class LocalStorageElement implements StorageElement {
 
     @Override
     public long length() {
-        return this.filePath.toFile().length();
+        return this.filePath.toFile().length(); //Length of Directory is equal to 0
     }
 
     @Override
