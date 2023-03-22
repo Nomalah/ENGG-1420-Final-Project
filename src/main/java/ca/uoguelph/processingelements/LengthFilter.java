@@ -62,16 +62,10 @@ public class LengthFilter implements ProcessingElement {
                         break;
                 }
             }
-            else if (element.isDirectory()) {
-                break;
-            }
+
             return output;
         }
-        void print
-        
-        
-        
-        
+        void print 
             () { 
             System.out.println("LengthFilter");
         }
