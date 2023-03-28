@@ -3,6 +3,7 @@ package ca.uoguelph.processingelements;
 import ca.uoguelph.storageelements.StorageElement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,72 +13,76 @@ public interface ProcessingElement {
     void print();
 
     static ProcessingElement create(JSONObject elementDescription) throws ParseException {
-        JSONArray parameters = elementDescription.getJSONArray("parameters");
-        ArrayList<String> parameterNames = new ArrayList<>();
-        ArrayList<String> parameterValues = new ArrayList<>();
+        // Get the parameters of the ProcessingElement and insert them into name/value pairs
+        JSONArray parametersJSON = elementDescription.getJSONArray("parameters");
+        HashMap<String, String> parameters = new HashMap<>();
 
-        for (int i = 0; i < parameters.length(); i++) {
-            JSONObject parameter = parameters.getJSONObject(i);
-            parameterNames.add(parameter.getString("name"));
-            parameterValues.add(parameter.getString("value"));
+        // Insert parameters into a hashmap
+        for (int i = 0; i < parametersJSON.length(); i++) {
+            JSONObject parameterJSON = parametersJSON.getJSONObject(i);
+            parameters.put(parameterJSON.getString("name"), parameterJSON.getString("value"));
         }
-
+        
+        // Depending on the type of processing element:
+        // Check if the number of parameters are correct,
+        // Check if the types are correct,
+        // Call the constructor of the coresponding processing element.
         switch (elementDescription.getString("type")) {
             case "NameFilter": {
-                if (parameterNames.size() != 1) {
+                if (parameters.size() != 1) {
                     throw new ParseException("Invalid number of parameters for NameFilter", 0);
                 }
-                String key = parameterValues.get(parameterNames.indexOf("Key"));
+                String key = parameters.get("Key");
                 return new NameFilter(key);
             }
             case "LengthFilter": {
-                if (parameterNames.size() != 2) {
+                if (parameters.size() != 2) {
                     throw new ParseException("Invalid number of parameters for LengthFilter", 0);
                 }
-                long length = Long.parseLong(parameterValues.get(parameterNames.indexOf("Length")));
-                String operator = parameterValues.get(parameterNames.indexOf("Operator"));
+                long length = Long.parseLong(parameters.get("Length"));
+                String operator = parameters.get("Operator");
                 return new LengthFilter(length, operator);
             }
             case "ContentFilter": {
-                if (parameterNames.size() != 1) {
+                if (parameters.size() != 1) {
                     throw new ParseException("Invalid number of parameters for ContentFilter", 0);
                 }
-                String key = parameterValues.get(parameterNames.indexOf("Key"));
+                String key = parameters.get("Key");
                 return new ContentFilter(key);
             }
             case "CountFilter": {
-                if (parameterNames.size() != 2) {
+                if (parameters.size() != 2) {
                     throw new ParseException("Invalid number of parameters for CountFilter", 0);
                 }
-                String key = parameterValues.get(parameterNames.indexOf("Key"));
-                int min = Integer.parseInt(parameterValues.get(parameterNames.indexOf("Min")));
+                String key = parameters.get("Key");
+                int min = Integer.parseInt(parameters.get("Min"));
                 return new CountFilter(key, min);
             }
             case "Split": {
-                if (parameterNames.size() != 1) {
+                if (parameters.size() != 1) {
                     throw new ParseException("Invalid number of parameters for Split", 0);
                 }
-                long lines = Long.parseLong(parameterValues.get(parameterNames.indexOf("Lines")));
+                long lines = Long.parseLong(parameters.get("Lines"));
                 return new Split(lines);
             }
             case "List": {
-                if (parameterNames.size() != 1) {
+                if (parameters.size() != 1) {
                     throw new ParseException("Invalid number of parameters for List", 0);
                 }
-                long max = Long.parseLong(parameterValues.get(parameterNames.indexOf("Max")));
+                long max = Long.parseLong(parameters.get("Max"));
                 return new List(max);
             }
             case "Rename": {
-                if (parameterNames.size() != 1) {
+                if (parameters.size() != 1) {
                     throw new ParseException("Invalid number of parameters for Rename", 0);
                 }
-                String suffix = parameterValues.get(parameterNames.indexOf("Suffix"));
+                String suffix = parameters.get("Suffix");
                 return new Rename(suffix);
             }
             case "Print":
                 return new Print();
             default:
-                throw new ParseException("Unknown type of processing element", 0);
+                throw new ParseException("Unknown type of processing element", 0); // Non-existant processing element
         }
     }
 }

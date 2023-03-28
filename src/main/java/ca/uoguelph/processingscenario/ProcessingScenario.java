@@ -12,17 +12,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ProcessingScenario {
-    private final JSONObject scenario;
-    private final boolean verbose;
 
-    public ProcessingScenario(String scenarioPath, boolean verbose) throws IOException {
+    private final JSONObject scenario;
+
+    public ProcessingScenario(String scenarioPath) throws IOException {
         String jsonString = Files.readString(Path.of(scenarioPath));
         this.scenario = new JSONObject(jsonString);
-        this.verbose = verbose;
-        if (this.verbose) {
-            System.out.println("Input Scenario:");
-            System.out.println(jsonString);
-        }
+        System.out.println("Input Scenario:");
+        System.out.println(jsonString);
     }
 
     private ArrayList<StorageElement> parseInputStorageEntries(JSONArray inputStorageEntries)
@@ -30,33 +27,38 @@ public class ProcessingScenario {
         ArrayList<StorageElement> result = new ArrayList<>();
         for (int i = 0; i < inputStorageEntries.length(); i++) {
             JSONObject storageElementJson = inputStorageEntries.getJSONObject(i);
-            result.add(StorageElement.create(storageElementJson));
-            if (this.verbose) {
-                System.out.printf("Added storage element: %s : ", result.get(i).name());
-                result.get(i).print();
-            }
+            result.add(StorageElement.create(storageElementJson)); // Create the storage elemnt from JSON info
+
+            // Print some info
+            System.out.printf("Added storage element: %s : ", result.get(i).name());
+            result.get(i).print();
         }
         return result;
     }
 
     public void executeScenario() throws ParseException, JSONException {
-        ArrayList<StorageElement> currentElements = new ArrayList<>();
+        ArrayList<StorageElement> currentStorageElements = new ArrayList<>();
+
+        System.out.printf("Executing scenario: %s%n", scenario.getString("name"));
+
+        // Get the list of processing elements
         JSONArray processingElementsJson = scenario.getJSONArray("processing_elements");
         for (int i = 0; i < processingElementsJson.length(); i++) {
             System.out.println("Parsing processing element... ");
-            JSONObject processingElementJson = processingElementsJson.getJSONObject(i);
+            JSONObject processingElementJson = processingElementsJson.getJSONObject(i); // Grab the json for an indiviual processing elementa
 
             System.out.println("Parsing input entries...");
             JSONArray inputStorageElements = processingElementJson.getJSONArray("input_entries");
-            currentElements.addAll(parseInputStorageEntries(inputStorageElements)); // Add any input entries to the list
-            ProcessingElement processingElement = ProcessingElement.create(processingElementJson);
+            currentStorageElements.addAll(parseInputStorageEntries(inputStorageElements)); // Add any input entries to the queue of storage elements
 
-            if (this.verbose) {
-                System.out.print("Executing processing element: ");
-                processingElement.print();
-            }
+            System.out.println("Creating processing element...");
+            ProcessingElement processingElement = ProcessingElement.create(processingElementJson); // Create the processing element from JSON info
 
-            currentElements = processingElement.process(currentElements);
+            System.out.print("Executing processing element: ");
+            processingElement.print();
+
+            // Update our current queue of storage elements
+            currentStorageElements = processingElement.process(currentStorageElements);
         }
     }
 }
