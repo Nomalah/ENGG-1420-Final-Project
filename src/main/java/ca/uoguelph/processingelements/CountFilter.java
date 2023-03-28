@@ -4,39 +4,35 @@ import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
 
 public class CountFilter implements ProcessingElement {
-
     private final int minCount;
     private final String searchKey;
 
     public CountFilter(String searchKey, int minCount) {
-
         this.searchKey = searchKey;
-        minCount = Math.max(minCount, 0);
-        this.minCount = minCount;
+        this.minCount = Math.max(minCount, 0); // Negative counts don't make sense
     }
 
     @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
-        ArrayList<StorageElement> countOutput = new ArrayList<>();
+        ArrayList<StorageElement> output = new ArrayList<>();
         for (StorageElement element : input) {
+            // Count filter only makes sense for files
             if (!element.isDirectory()) {
-                String[] counted = element.read().split(this.searchKey);
-                int count;
-                count = counted.length - 1;
+                int numberOfOccurances = element.read().split(this.searchKey).length - 1;
 
-                if (count >= minCount) {
-                    countOutput.add(element);
+                if (numberOfOccurances >= minCount) {
+                    output.add(element);
                 }
-
+            } else {
+                // Transparently pass through folders
+                output.add(element);
             }
-
-            return countOutput;
         }
+        return output;
+    }
 
-        @Override
-        public void print
-        
-        
-            () {
+    @Override
+    public void print() {
         System.out.println("CountFilter");
-        }
+    }
+}
