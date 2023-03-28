@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class RemoteStorageElement implements StorageElement {
+    public static boolean initialized = false;
+
     private static AccessKey accessKey = null;
     private static RepositoryApiClient repoClient = null;
     private static EntriesClient entriesClient = null;
@@ -24,6 +26,7 @@ public class RemoteStorageElement implements StorageElement {
             throw new IllegalStateException("RemoteStorageElement API client has not been initialized");
         this.repoId = repoId;
         this.entry = entriesClient.getEntry(repoId, entryId, null).join();
+        this.initialized = true;
     }
 
     public static void initLaserficheClient(String principalServiceKey, String base64AccessKey) throws IllegalStateException {
@@ -64,6 +67,9 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public long length() {
+        if (isDirectory())
+            return 0;
+
         File file = createFileFromEntry();
         long length = file.length();
 
@@ -85,6 +91,9 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public String read() {
+        if (isDirectory())
+            return this.name();
+
         try {
             File file = createFileFromEntry();
 
