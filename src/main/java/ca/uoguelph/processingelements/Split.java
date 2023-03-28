@@ -34,13 +34,7 @@ public class Split implements ProcessingElement {
                 String[] fileLines = fileContents.split("\n");
                 String nameOfEntry = input.get(i).name();
 
-                // count number of Lines in file
-                int numOfLines = 0;
-                for (int j = 0; j < fileLines.length; j++) {
-                    if (fileLines[j] != null) {
-                        numOfLines++;
-                    }
-                }
+                
                 String newName;
                 int num_arrays = 0;
 
@@ -56,7 +50,7 @@ public class Split implements ProcessingElement {
                     num_arrays++;
                 }
                 // If rest>0, last array will contain less elements
-                if (rest > 0) {
+                if (rest != 0) {
                     arrays[parts - 1] = Arrays.copyOfRange(fileLines, (parts - 1) * target_lines, (parts - 1) * target_lines + rest);
                     num_arrays++;
                 }
