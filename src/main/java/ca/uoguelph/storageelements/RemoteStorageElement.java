@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class RemoteStorageElement implements StorageElement {
-    public static boolean initialized = false;
 
     private static AccessKey accessKey = null;
     private static RepositoryApiClient repoClient = null;
@@ -22,16 +21,17 @@ public class RemoteStorageElement implements StorageElement {
     private final Entry entry;
 
     public RemoteStorageElement(String repoId, Integer entryId) {
-        if (repoClient == null)
+        if (repoClient == null) {
             throw new IllegalStateException("RemoteStorageElement API client has not been initialized");
+        }
         this.repoId = repoId;
         this.entry = entriesClient.getEntry(repoId, entryId, null).join();
-        this.initialized = true;
     }
 
     public static void initLaserficheClient(String principalServiceKey, String base64AccessKey) throws IllegalStateException {
-        if (repoClient != null)
+        if (repoClient != null) {
             throw new IllegalStateException("RemoteStorageElement API client has already been initialized");
+        }
         accessKey = AccessKey.createFromBase64EncodedAccessKey(base64AccessKey);
         repoClient = RepositoryApiClientImpl.createFromAccessKey(principalServiceKey, accessKey);
         entriesClient = repoClient.getEntriesClient();
@@ -46,8 +46,9 @@ public class RemoteStorageElement implements StorageElement {
                 byte[] buffer = new byte[1024];
                 while (true) {
                     int length = inputStream.read(buffer);
-                    if (length <= 0)
+                    if (length <= 0) {
                         break;
+                    }
                     f.write(buffer, 0, length);
                 }
                 inputStream.close();
@@ -56,6 +57,7 @@ public class RemoteStorageElement implements StorageElement {
             }
         };
 
+        // Export the document as a file
         entriesClient.exportDocument(repoId, entry.getId(), null, c);
         return new File(entry.getName());
     }
@@ -67,13 +69,14 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public long length() {
-        if (isDirectory())
+        if (isDirectory()) // Length of directory must be zero according to document
+        {
             return 0;
+        }
 
+        // Create a temporary file, and check it's length
         File file = createFileFromEntry();
         long length = file.length();
-
-        // Delete the temporary file
         file.delete();
 
         return length;
@@ -85,14 +88,15 @@ public class RemoteStorageElement implements StorageElement {
     }
 
     @Override
-    public void rename(String name) {
+    public void rename(String name) { // Unavailable due to readonly
         System.out.println("Cannot rename remote files");
     }
 
     @Override
     public String read() {
-        if (isDirectory())
+        if (isDirectory()) {
             return this.name();
+        }
 
         try {
             File file = createFileFromEntry();
@@ -102,8 +106,11 @@ public class RemoteStorageElement implements StorageElement {
             StringBuilder content = new StringBuilder();
             String currentLine = null;
 
-            while ((currentLine = reader.readLine()) != null)
-                content.append(currentLine + "\n");
+            // Add each line
+            while ((currentLine = reader.readLine()) != null) {
+                content.append(currentLine);
+                content.append("\n");
+            }
 
             // Delete the cached file
             file.delete();
@@ -117,24 +124,26 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public void print() {
-        String format = "RemoteStorageElement - %s\n\tEntry ID: %d\n\tAbsolute Path: %s";
-        System.out.printf((format) + "%n", entry.getName(), entry.getId(), entry.getFullPath());
+        String format = "RemoteStorageElement - %s\n\tEntry ID: %d\n\tAbsolute Path: %s%n";
+        System.out.printf(format, entry.getName(), entry.getId(), entry.getFullPath());
     }
 
     @Override
     public ArrayList<StorageElement> getChildStorageElements() {
-        if (!isDirectory())
+        if (!isDirectory()) {
             return new ArrayList<>();
+        }
 
         ODataValueContextOfIListOfEntry result = entriesClient
-            .getEntryListing(repoId, entry.getId(), true, null, null, null, null, null, "name", null, null, null).join();
+                .getEntryListing(repoId, entry.getId(), true, null, null, null, null, null, "name", null, null, null).join();
 
         ArrayList<Entry> entries = new ArrayList<>(result.getValue());
         ArrayList<StorageElement> elements = new ArrayList<>();
 
         // Convert all the entries to StorageElements and add them to the ArrayList
-        for (Entry entry : entries)
+        for (Entry entry : entries) {
             elements.add(new RemoteStorageElement(this.repoId, entry.getId()));
+        }
 
         return elements;
     }

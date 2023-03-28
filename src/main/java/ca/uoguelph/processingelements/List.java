@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class List implements ProcessingElement {
 
-    private long maxFolderEntries;
+    private final long maxFolderEntries;
 
     public List(long max) {
         this.maxFolderEntries = max;
@@ -15,21 +15,23 @@ public class List implements ProcessingElement {
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> output = new ArrayList<>();
 
-        for (int i = 0; i < input.size(); i++) {
-            if (input.get(i).isDirectory()) {
-                ArrayList<StorageElement> childElements = input.get(i).getChildStorageElements();
-                if (maxFolderEntries < childElements.size()) {
+        for (StorageElement element : input) {
+            if (element.isDirectory()) {
+                ArrayList<StorageElement> childElements = element.getChildStorageElements();
+                // If the number of max entries is less then the current number of entries, we're limited by the "max entries"
+                if (maxFolderEntries < childElements.size()) { 
                     for (int j = 0; j < maxFolderEntries; j++) {
                         output.add(childElements.get(j));
                     }
                 } else {
+                    // If the number of max entries is greater then the current number of entries, we're limited by the number of child elements
                     for (int j = 0; j < childElements.size(); j++) {
                         output.add(childElements.get(j));
                     }
                 }
 
             } else {
-                output.add(input.get(i)); //if its a file pass it through element
+                output.add(element); //if its a file pass it through element
 
             }
         }

@@ -19,14 +19,12 @@ public class LocalStorageElement implements StorageElement {
 
     @Override
     public boolean isDirectory() {
-
         return Files.isDirectory(this.filePath, LinkOption.NOFOLLOW_LINKS);
-
     }
 
     @Override
     public long length() {
-        return this.filePath.toFile().length(); //Length of Directory is equal to 0
+        return this.filePath.toFile().length(); // Length of Directory is equal to 0
     }
 
     @Override
@@ -34,8 +32,10 @@ public class LocalStorageElement implements StorageElement {
         return this.filePath.getFileName().toString();
     }
 
+    @Override
     public void rename(String name) {
         try {
+            // This renames the file, and then changes the file path that we refer to, in accordance with the new file
             Files.move(this.filePath, this.filePath.resolveSibling(name));
             this.filePath = this.filePath.resolveSibling(name);
         } catch (IOException ex) {
@@ -46,12 +46,10 @@ public class LocalStorageElement implements StorageElement {
     @Override
     public String read() {
         try {
-            String fileContent = Files.readString(this.filePath);
-            return fileContent;
+            return Files.readString(this.filePath); // Return the file as a string
         } catch (IOException ex) {
             return "Error reading file";
         }
-
     }
 
     @Override
@@ -63,15 +61,16 @@ public class LocalStorageElement implements StorageElement {
 
     @Override
     public ArrayList<StorageElement> getChildStorageElements() {
+        // Files don't have any child elements
         if (!isDirectory()) {
             return new ArrayList<>();
         }
-        ArrayList<StorageElement> fileList = new ArrayList<StorageElement>();
+        ArrayList<StorageElement> childStorageElements = new ArrayList<>();
         File files[] = this.filePath.toFile().listFiles();
-        for(int i = 0; i<files.length; i++){
-            LocalStorageElement localStorageElement = new LocalStorageElement(files[i].getAbsolutePath());
-            fileList.add(localStorageElement);
+        for (File childFile : files) {
+            // Convert known files into localstoragelements
+            childStorageElements.add(new LocalStorageElement(childFile.getAbsolutePath()));
         }
-        return fileList; // Get all child files/folders
+        return childStorageElements; // Get all child files/folders
     }
 }
