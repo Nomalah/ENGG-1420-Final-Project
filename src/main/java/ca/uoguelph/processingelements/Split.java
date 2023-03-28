@@ -13,6 +13,7 @@ public class Split implements ProcessingElement {
     int target_lines;
 
     public Split(int target_lines) {
+        this.target_lines = target_lines;
 
     }
 
