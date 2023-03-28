@@ -1,12 +1,11 @@
 package ca.uoguelph.processingelements;
 
+import ca.uoguelph.storageelements.LocalStorageElement;
 import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Split implements ProcessingElement {
 
@@ -35,45 +34,48 @@ public class Split implements ProcessingElement {
                 String[] fileLines = fileContents.split("\n");
                 String nameOfEntry = input.get(i).name();
 
-                
-                String newName;
-                int num_arrays = 0;
-
                 // check if array can be split into multiple equal arrays
                 int rest = fileLines.length % target_lines;
                 // check how manny arrays input array can be split into
-                int parts = fileLines.length / target_lines + (rest > 0 ? 1 : 0);
+                int parts = fileLines.length / target_lines;
                 // create array of required size
-                String[][] arrays = new String[parts][];
-                for (int j = 0; j < (rest > 0 ? parts - 1 : parts); j++) {
-                    // copies into new array
-                    arrays[i] = Arrays.copyOfRange(fileLines, j * target_lines, j * target_lines + target_lines);
-                    num_arrays++;
-                }
-                // If rest>0, last array will contain less elements
-                if (rest != 0) {
-                    arrays[parts - 1] = Arrays.copyOfRange(fileLines, (parts - 1) * target_lines, (parts - 1) * target_lines + rest);
-                    num_arrays++;
-                }
-                // create new files for corresponding num of arrays
-                for (int f = 0; f <= num_arrays; f++) {
-                    newName = nameOfEntry + ".part" + f + 1;
-                    PrintStream ps;
-                    try {
-                        ps = new PrintStream(new FileOutputStream(newName));
-                        // how to only add each consectutive array to a new file?
-                        // I have a feeling this won't work
-                        for (int row = 0; row < row + 1; row++) {
-                            for (int col = 0; col < col + 1; col++) {
-                                String s = arrays[row][col];
-                                ps.println(s);
+                int count = 0;
 
-                            }
+                for (int j = 0; j < parts; j++) {
+                    count++;
+
+                    Path file = Path.of(nameOfEntry + ".part" + count);
+
+                    for (int k = 0; k < target_lines; k++) {
+                        try {
+                            Files.writeString(file, fileLines[k + (target_lines * j)]);
+                        } catch (IOException ex) {
+                            System.out.println("not a file");
+
                         }
-                        ps.close();
-                    } catch (FileNotFoundException e) {
 
                     }
+                    LocalStorageElement ele = new LocalStorageElement(file.toFile().getPath());
+                    output.add(ele);
+
+                }
+
+                if (rest != 0) {
+                    count++;
+
+                    Path file = Path.of(nameOfEntry + ".part" + count);
+
+                    for (int r = 0; r < rest; r++) {
+                        try {
+                            Files.writeString(file, fileLines[r + (target_lines * parts)]);
+                        } catch (IOException ex) {
+                            System.out.println("not a file");
+
+                        }
+
+                    }
+                    LocalStorageElement ele = new LocalStorageElement(file.toFile().getPath());
+                    output.add(ele);
 
                 }
 
