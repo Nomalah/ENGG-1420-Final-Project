@@ -4,6 +4,7 @@ import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
 
 public class CountFilter implements ProcessingElement {
+
     private final int minCount;
     private final String searchKey;
 

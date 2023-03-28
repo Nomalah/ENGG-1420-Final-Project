@@ -4,12 +4,13 @@ import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
 
 public class ContentFilter implements ProcessingElement {
+
     private final String searchKey;
 
     public ContentFilter(String searchKey) {
         this.searchKey = searchKey;
     }
-    
+
     @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> output = new ArrayList<>();
@@ -17,7 +18,7 @@ public class ContentFilter implements ProcessingElement {
             // Checking content on directories doesn't make sense
             if (!element.isDirectory()) {
                 // Check if file contains the search content
-                if (element.read().contains(searchKey)){
+                if (element.read().contains(searchKey)) {
                     output.add(element);
                 }
             } else {

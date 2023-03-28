@@ -4,6 +4,7 @@ import ca.uoguelph.storageelements.StorageElement;
 import java.util.ArrayList;
 
 public class LengthFilter implements ProcessingElement {
+
     private final long targetLength;
     private final String operator;
 
