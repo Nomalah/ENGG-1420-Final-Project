@@ -35,4 +35,6 @@ public interface StorageElement {
                 throw new ParseException("Unknown type of storage element", 0);
         }
     }
+
+   
 }
