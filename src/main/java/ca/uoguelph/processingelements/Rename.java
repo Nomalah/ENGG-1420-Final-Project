@@ -15,7 +15,7 @@ public class Rename implements ProcessingElement {
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         for (StorageElement element : input) {
             String name = element.name();
-            int split_index = name.indexOf("."); // Find file extension start
+            int split_index = name.lastIndexOf("."); // Find file extension start
             String new_name
                     = name.substring(0, split_index) // Add prefix
                     + this.target_suffix // Add suffix
