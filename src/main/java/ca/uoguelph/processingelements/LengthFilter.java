@@ -16,6 +16,7 @@ public class LengthFilter implements ProcessingElement {
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> output = new ArrayList<>();
         for (StorageElement element : input) {
+            // Check length against target length based on operator
             switch (operator) {
                 case "EQ":
                     if (element.length() == targetLength) {
