@@ -13,27 +13,20 @@ public class Split implements ProcessingElement {
 
     public Split(long target_lines) {
         this.target_lines = target_lines;
-
     }
 
     @Override
-    // function
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         ArrayList<StorageElement> output = new ArrayList<>();
         // iterate through output ArrayList
         for (StorageElement element : input) {
-            boolean bool;
-            // create bool to check if element is directory
-            bool = element.isDirectory();
             // if directory, no changes made
-            if (bool == true) {
-                return input;
-                // else is file
-            } else if (bool == false) {
+            if (element.isDirectory() || !(element instanceof LocalStorageElement)) { // To split, must be on local storage
+                output.add(element); // Pass directories through
+            } else {
                 String fileContents = element.read();
                 String[] fileLines = fileContents.split("\n");
                 String nameOfPath = ((LocalStorageElement)element).getFilePath().toString();
-                String nameOfEntery;
                 int splitIndex = nameOfPath.lastIndexOf(".");
                 // check if array can be split into multiple equal arrays
                 long rest = fileLines.length % target_lines;
@@ -50,15 +43,12 @@ public class Split implements ProcessingElement {
                     for (int k = 0; k < target_lines; k++) {
                       content += (fileLines[k + ((int)target_lines * j)] + "\n");
                     }
-                      try {
-                            Files.writeString(file, content);
-                        } catch (IOException ex) {
-                            System.out.println("not a file");
-
-                        }
-                    LocalStorageElement ele = new LocalStorageElement(file.toFile().getPath());
-                    output.add(ele);
-
+                    try {
+                        Files.writeString(file, content);
+                    } catch (IOException ex) {
+                        System.out.println("not a file");
+                    }
+                    output.add(new LocalStorageElement(file.toFile().getPath()));
                 }
 
                 if (rest != 0) {
@@ -71,18 +61,13 @@ public class Split implements ProcessingElement {
                         
                     }
                     try {
-                            Files.writeString(file, content);
-                        } catch (IOException ex) {
-                            System.out.println("not a file");
-
-                        }
-                    LocalStorageElement ele = new LocalStorageElement(file.toFile().getPath());
-                    output.add(ele);
-
+                        Files.writeString(file, content);
+                    } catch (IOException ex) {
+                        System.out.println("not a file");
+                    }
+                    output.add(new LocalStorageElement(file.toFile().getPath()));
                 }
-
             }
-
         }
 
         return output;

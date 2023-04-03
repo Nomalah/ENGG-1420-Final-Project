@@ -32,7 +32,6 @@ public class List implements ProcessingElement {
 
             } else {
                 output.add(element); //if its a file pass it through element
-
             }
         }
         return output;

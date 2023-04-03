@@ -126,8 +126,8 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public void print() {
-        String format = "RemoteStorageElement - %s\n\tEntry ID: %d\n\tAbsolute Path: %s%n";
-        System.out.printf(format, entry.getName(), entry.getId(), entry.getFullPath());
+        System.out.printf("REMOTESTORAGEELEMENT - FILENAME: %s - LENGTH: %d - ABSOLUTE PATH: %s - ENTRY ID: %d%n",
+                entry.getName(), this.length(),entry.getFullPath(),entry.getId());
     }
 
     @Override
