@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class RemoteStorageElement implements StorageElement {
+    static Boolean initialized = false;
 
     private static AccessKey accessKey = null;
     private static RepositoryApiClient repoClient = null;
@@ -26,6 +27,7 @@ public class RemoteStorageElement implements StorageElement {
         }
         this.repoId = repoId;
         this.entry = entriesClient.getEntry(repoId, entryId, null).join();
+        this.initialized = true;
     }
 
     public static void initLaserficheClient(String principalServiceKey, String base64AccessKey) throws IllegalStateException {
