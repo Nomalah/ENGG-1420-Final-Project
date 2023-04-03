@@ -5,6 +5,7 @@ import com.laserfiche.repository.api.RepositoryApiClient;
 import com.laserfiche.repository.api.RepositoryApiClientImpl;
 import com.laserfiche.repository.api.clients.EntriesClient;
 import com.laserfiche.repository.api.clients.impl.model.Entry;
+import com.laserfiche.api.client.model.ApiException;
 import com.laserfiche.repository.api.clients.impl.model.ODataValueContextOfIListOfEntry;
 import com.laserfiche.repository.api.clients.params.ParametersForExportDocument;
 import com.laserfiche.repository.api.clients.params.ParametersForGetEntry;
@@ -22,6 +23,8 @@ public class RemoteStorageElement implements StorageElement {
 
     private final String repoId;
     private final Entry entry;
+    
+    private String cachedValue = null;
 
     public RemoteStorageElement(String repoId, Integer entryId) {
         if (!RemoteStorageElement.initialized) {
@@ -78,7 +81,11 @@ public class RemoteStorageElement implements StorageElement {
     public String read() {
         // Check if the file is a directory
         if (isDirectory()) {
-            return this.name();
+            return "";
+        }
+        
+        if (this.cachedValue != null) {
+            return this.cachedValue;
         }
 
         // Parameters
@@ -87,12 +94,23 @@ public class RemoteStorageElement implements StorageElement {
         exportParameters.setEntryId(this.entry.getId());
 
         // Input stream
-        InputStream stream = entriesClient.exportDocumentAsStream(exportParameters);
+        InputStream stream = null;
+        while (stream == null) {
+            InputStream temp = null;
+            try {
+                temp = entriesClient.exportDocumentAsStream(exportParameters);
+                stream = temp;
+            } catch (ApiException e) {
+                System.out.println("Busy wait due to request limit exceeded.");
+            }
+        }
+        
 
         // Try to read from the stream
         try {
             byte[] content = stream.readAllBytes();
-            return new String(content, StandardCharsets.UTF_8);
+            this.cachedValue = new String(content, StandardCharsets.UTF_8);
+            return this.cachedValue;
         } catch(IOException e) {
             return "";
         }

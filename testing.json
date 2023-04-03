@@ -41,36 +41,6 @@
                     "type": "remote",
                     "repositoryId": "r-0001d410ba56",
                     "entryId": "4"
-                },
-                {
-                    "type": "remote",
-                    "repositoryId": "r-0001d410ba56",
-                    "entryId": "16"
-                },
-                {
-                    "type": "remote",
-                    "repositoryId": "r-0001d410ba56",
-                    "entryId": "17"
-                },
-                {
-                    "type": "remote",
-                    "repositoryId": "r-0001d410ba56",
-                    "entryId": "15"
-                },
-                {
-                    "type": "remote",
-                    "repositoryId": "r-0001d410ba56",
-                    "entryId": "24"
-                },
-                {
-                    "type": "remote",
-                    "repositoryId": "r-0001d410ba56",
-                    "entryId": "26"
-                },
-                {
-                    "type": "remote",
-                    "repositoryId": "r-0001d410ba56",
-                    "entryId": "25"
                 }
             ],
             "parameters": []
@@ -96,11 +66,95 @@
             "parameters": [
                 {
                     "name": "Length",
-                    "value": "1024"
+                    "value": "50"
                 },
                 {
                     "name": "Operator",
                     "value": "GTE"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
+            "type": "NameFilter",
+            "input_entries": [],
+            "parameters": [
+                {
+                    "name": "Key",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
+            "type": "ContentFilter",
+            "input_entries": [],
+            "parameters": [
+                {
+                    "name": "Key",
+                    "value": "lor"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
+            "type": "CountFilter",
+            "input_entries": [],
+            "parameters": [
+                {
+                    "name": "Key",
+                    "value": "lor"
+                },
+                {
+                    "name": "Min",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
+            "type": "Rename",
+            "input_entries": [
+                {
+                    "type": "local",
+                    "path": "testing/lorem_ipsum2.txt"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Suffix",
+                    "value": "yo"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
+            "type": "Split",
+            "input_entries": [],
+            "parameters": [
+                {
+                    "name": "Lines",
+                    "value": "3"
                 }
             ]
         },
