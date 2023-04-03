@@ -72,10 +72,7 @@ public class LocalStorageElement implements StorageElement {
         File files[] = this.filePath.toFile().listFiles();
         for (File childFile : files) {
             // Convert known files into localstoragelements
-            System.out.println(childFile.getAbsolutePath());
-            if (!this.filePath.toFile().getAbsolutePath().equals(childFile.getAbsolutePath())){
-                childStorageElements.add(new LocalStorageElement(childFile.getAbsolutePath()));
-            }
+            childStorageElements.add(new LocalStorageElement(childFile.getAbsolutePath()));
         }
         return childStorageElements; // Get all child files/folders
     }

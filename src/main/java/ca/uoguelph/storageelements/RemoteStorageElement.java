@@ -6,13 +6,16 @@ import com.laserfiche.repository.api.RepositoryApiClientImpl;
 import com.laserfiche.repository.api.clients.EntriesClient;
 import com.laserfiche.repository.api.clients.impl.model.Entry;
 import com.laserfiche.repository.api.clients.impl.model.ODataValueContextOfIListOfEntry;
+import com.laserfiche.repository.api.clients.params.ParametersForExportDocument;
+import com.laserfiche.repository.api.clients.params.ParametersForGetEntry;
+import com.laserfiche.repository.api.clients.params.ParametersForGetEntryListing;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class RemoteStorageElement implements StorageElement {
-
+    public static Boolean initialized = false;
     private static AccessKey accessKey = null;
     private static RepositoryApiClient repoClient = null;
     private static EntriesClient entriesClient = null;
@@ -21,47 +24,31 @@ public class RemoteStorageElement implements StorageElement {
     private final Entry entry;
 
     public RemoteStorageElement(String repoId, Integer entryId) {
-        if (repoClient == null) {
+        if (!RemoteStorageElement.initialized) {
             throw new IllegalStateException("RemoteStorageElement API client has not been initialized");
         }
+
+        ParametersForGetEntry entryParameters = new ParametersForGetEntry();
+        entryParameters = entryParameters.setRepoId(repoId);
+        entryParameters = entryParameters.setEntryId(entryId);
+
         this.repoId = repoId;
-        this.entry = entriesClient.getEntry(repoId, entryId, null).join();
+        this.entry = entriesClient.getEntry(entryParameters);
     }
 
     public static void initLaserficheClient(String principalServiceKey, String base64AccessKey) throws IllegalStateException {
-        if (repoClient != null) {
+        if (RemoteStorageElement.initialized) {
             throw new IllegalStateException("RemoteStorageElement API client has already been initialized");
         }
+
         accessKey = AccessKey.createFromBase64EncodedAccessKey(base64AccessKey);
         repoClient = RepositoryApiClientImpl.createFromAccessKey(principalServiceKey, accessKey);
         entriesClient = repoClient.getEntriesClient();
+
+        RemoteStorageElement.initialized = true;
     }
 
     // It's re-used so might as well make a method
-    private File createFileFromEntry() {
-        // Stuff taken from Laserfiche unit tests
-        Consumer<InputStream> c = inputStream -> {
-            File file = new File(entry.getName());
-            try (FileOutputStream f = new FileOutputStream(file)) {
-                byte[] buffer = new byte[1024];
-                while (true) {
-                    int length = inputStream.read(buffer);
-                    if (length <= 0) {
-                        break;
-                    }
-                    f.write(buffer, 0, length);
-                }
-                inputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-
-        // Export the document as a file
-        entriesClient.exportDocument(repoId, entry.getId(), null, c);
-        return new File(entry.getName());
-    }
-
     @Override
     public boolean isDirectory() {
         return entry.isContainer();
@@ -74,12 +61,7 @@ public class RemoteStorageElement implements StorageElement {
             return 0;
         }
 
-        // Create a temporary file, and check it's length
-        File file = createFileFromEntry();
-        long length = file.length();
-        file.delete();
-
-        return length;
+        return this.read().length();
     }
 
     @Override
@@ -94,31 +76,25 @@ public class RemoteStorageElement implements StorageElement {
 
     @Override
     public String read() {
+        // Check if the file is a directory
         if (isDirectory()) {
             return this.name();
         }
 
+        // Parameters
+        ParametersForExportDocument exportParameters = new ParametersForExportDocument();
+        exportParameters.setRepoId(this.repoId);
+        exportParameters.setEntryId(this.entry.getId());
+
+        // Input stream
+        InputStream stream = entriesClient.exportDocumentAsStream(exportParameters);
+
+        // Try to read from the stream
         try {
-            File file = createFileFromEntry();
-
-            // Read the file
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            StringBuilder content = new StringBuilder();
-            String currentLine = null;
-
-            // Add each line
-            while ((currentLine = reader.readLine()) != null) {
-                content.append(currentLine);
-                content.append("\n");
-            }
-
-            // Delete the cached file
-            file.delete();
-
-            // Return the content
-            return content.toString();
-        } catch (IOException e) {
-            return "Could not read file";
+            byte[] content = stream.readAllBytes();
+            return new String(content, StandardCharsets.UTF_8);
+        } catch(IOException e) {
+            return "";
         }
     }
 
@@ -134,8 +110,12 @@ public class RemoteStorageElement implements StorageElement {
             return new ArrayList<>();
         }
 
-        ODataValueContextOfIListOfEntry result = entriesClient
-                .getEntryListing(repoId, entry.getId(), true, null, null, null, null, null, "name", null, null, null).join();
+        ParametersForGetEntryListing entryListingParameters = new ParametersForGetEntryListing();
+        entryListingParameters = entryListingParameters.setRepoId(this.repoId);
+        entryListingParameters = entryListingParameters.setEntryId(this.entry.getId());
+        entryListingParameters = entryListingParameters.setOrderby("name");
+
+        ODataValueContextOfIListOfEntry result = entriesClient.getEntryListing(entryListingParameters);
 
         ArrayList<Entry> entries = new ArrayList<>(result.getValue());
         ArrayList<StorageElement> elements = new ArrayList<>();

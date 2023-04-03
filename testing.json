@@ -2,7 +2,7 @@
     "name": "First Scenario",
     "processing_elements": [
         {
-            "type": "List",
+            "type": "Print",
             "input_entries": [
                 {
                     "type": "local",
@@ -73,10 +73,15 @@
                     "entryId": "25"
                 }
             ],
+            "parameters": []
+        },
+        {
+            "type": "List",
+            "input_entries": [],
             "parameters": [
                 {
                     "name": "Max",
-                    "value": "100"
+                    "value": "3"
                 }
             ]
         },
