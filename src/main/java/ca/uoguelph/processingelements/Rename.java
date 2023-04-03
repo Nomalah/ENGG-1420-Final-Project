@@ -1,6 +1,7 @@
 package ca.uoguelph.processingelements;
 
 import ca.uoguelph.storageelements.StorageElement;
+import ca.uoguelph.storageelements.LocalStorageElement;
 import java.util.ArrayList;
 
 public class Rename implements ProcessingElement {
@@ -14,13 +15,15 @@ public class Rename implements ProcessingElement {
     @Override
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
         for (StorageElement element : input) {
-            String name = element.name();
-            int split_index = name.lastIndexOf("."); // Find file extension start
-            String new_name
-                    = name.substring(0, split_index) // Add prefix
-                    + this.target_suffix // Add suffix
-                    + name.substring(split_index); // Add file extension
-            element.rename(new_name); // Rename the element with it's new name
+            if (element instanceof LocalStorageElement) {
+                String name = element.name();
+                int split_index = name.lastIndexOf("."); // Find file extension start
+                String new_name
+                        = name.substring(0, split_index) // Add prefix
+                        + this.target_suffix // Add suffix
+                        + name.substring(split_index); // Add file extension
+                element.rename(new_name); // Rename the element with it's new name
+            }
         }
         return input;
     }

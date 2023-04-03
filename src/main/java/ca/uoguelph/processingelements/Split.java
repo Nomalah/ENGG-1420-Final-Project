@@ -9,82 +9,86 @@ import java.nio.file.Path;
 
 public class Split implements ProcessingElement {
 
+    // parameter of split method 
     long target_lines;
 
+    // split method constructor
     public Split(long target_lines) {
         this.target_lines = target_lines;
-
     }
 
     @Override
-    // function
     public ArrayList<StorageElement> process(ArrayList<StorageElement> input) {
+        // create new object of type storage element
         ArrayList<StorageElement> output = new ArrayList<>();
         // iterate through output ArrayList
         for (StorageElement element : input) {
-            boolean bool;
-            // create bool to check if element is directory
-            bool = element.isDirectory();
             // if directory, no changes made
-            if (bool == true) {
-                return input;
-                // else is file
-            } else if (bool == false) {
+            if (element.isDirectory() || !(element instanceof LocalStorageElement)) { // To split, must be on local storage
+                output.add(element); // Pass directories through
+                // if file case 
+            } else {
+                // read in file contents using .read(), a method of local storage element
+                // return file as single string
                 String fileContents = element.read();
+                // split into file lines at each space 
                 String[] fileLines = fileContents.split("\n");
-                String nameOfPath = ((LocalStorageElement)element).getFilePath().toString();
-                String nameOfEntery;
+                String nameOfPath = ((LocalStorageElement) element).getFilePath().toString();
+                // split name of path before extension to later change part names
                 int splitIndex = nameOfPath.lastIndexOf(".");
                 // check if array can be split into multiple equal arrays
-                long rest = fileLines.length % target_lines;
-                // check how manny arrays input array can be split into
+                long rest = fileLines.length % target_lines;// if rest is not 0 can not be split equal
+                // check how many parts input array can be split into
                 long parts = fileLines.length / target_lines;
-                // create array of required size
+
                 int count = 0;
 
+                // iterate through number of parts for split
                 for (int j = 0; j < parts; j++) {
                     count++;
-
-                    Path file = Path.of(nameOfPath.substring(0,splitIndex) + ".part" + count +nameOfPath.substring(splitIndex));
+                    // get path of each new part file 
+                    Path file = Path.of(nameOfPath.substring(0, splitIndex) + ".part" + count + nameOfPath.substring(splitIndex));
+                    // initilize content string 
                     String content = "";
+                    // loop through original file to start adding lines from next part
                     for (int k = 0; k < target_lines; k++) {
-                      content += (fileLines[k + ((int)target_lines * j)] + "\n");
+                        content += (fileLines[k + ((int) target_lines * j)] + "\n");
                     }
-                      try {
-                            Files.writeString(file, content);
-                        } catch (IOException ex) {
-                            System.out.println("not a file");
-
-                        }
-                    LocalStorageElement ele = new LocalStorageElement(file.toFile().getPath());
-                    output.add(ele);
-
+                    // write each part to new file 
+                    try {
+                        Files.writeString(file, content);
+                        // file exception
+                    } catch (IOException ex) {
+                        System.out.println("not a file");
+                    }
+                    // add parts to new local storage elements
+                    output.add(new LocalStorageElement(file.toFile().getPath()));
                 }
-
+                // if there is a remainder for split, add rest into new part file
                 if (rest != 0) {
                     count++;
-
-                    Path file = Path.of(nameOfPath.substring(0,splitIndex) + ".part" + count +nameOfPath.substring(splitIndex));
+                    // path of rest file 
+                    Path file = Path.of(nameOfPath.substring(0, splitIndex) + ".part" + count + nameOfPath.substring(splitIndex));
+                    // initilize content string 
                     String content = "";
+                    // add required file lines into rest file 
                     for (int r = 0; r < rest; r++) {
-                        content += (fileLines[r + ((int)target_lines * (int)parts)] + "\n");
-                        
+                        content += (fileLines[r + ((int) target_lines * (int) parts)] + "\n");
+
                     }
+                    // write rest to new file 
                     try {
-                            Files.writeString(file, content);
-                        } catch (IOException ex) {
-                            System.out.println("not a file");
-
-                        }
-                    LocalStorageElement ele = new LocalStorageElement(file.toFile().getPath());
-                    output.add(ele);
-
+                        Files.writeString(file, content);
+                        // file exception 
+                    } catch (IOException ex) {
+                        System.out.println("not a file");
+                    }
+                    // add rest file to new local storage element 
+                    output.add(new LocalStorageElement(file.toFile().getPath()));
                 }
-
             }
-
         }
-
+        // return part files 
         return output;
     }
 

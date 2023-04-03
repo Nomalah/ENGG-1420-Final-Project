@@ -29,10 +29,8 @@ public class List implements ProcessingElement {
                         output.add(childElements.get(j));
                     }
                 }
-
             } else {
                 output.add(element); //if its a file pass it through element
-
             }
         }
         return output;

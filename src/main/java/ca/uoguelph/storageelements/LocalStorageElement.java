@@ -14,7 +14,6 @@ public class LocalStorageElement implements StorageElement {
         if (!Files.exists(this.filePath)) {
             System.out.println("Error file doesn't exist");
         }
-
     }
 
     @Override

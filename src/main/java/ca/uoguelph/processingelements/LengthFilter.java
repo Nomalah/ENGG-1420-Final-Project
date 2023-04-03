@@ -30,22 +30,22 @@ public class LengthFilter implements ProcessingElement {
                     }
                     break;
                 case "GT":
-                    if (element.length() < targetLength) {
-                        output.add(element);
-                    }
-                    break;
-                case "GTE":
-                    if (element.length() <= targetLength) {
-                        output.add(element);
-                    }
-                    break;
-                case "LT":
                     if (element.length() > targetLength) {
                         output.add(element);
                     }
                     break;
-                case "LTE":
+                case "GTE":
                     if (element.length() >= targetLength) {
+                        output.add(element);
+                    }
+                    break;
+                case "LT":
+                    if (element.length() < targetLength) {
+                        output.add(element);
+                    }
+                    break;
+                case "LTE":
+                    if (element.length() <= targetLength) {
                         output.add(element);
                     }
                     break;
