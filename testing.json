@@ -1,0 +1,108 @@
+{
+    "name": "First Scenario",
+    "processing_elements": [
+        {
+            "type": "List",
+            "input_entries": [
+                {
+                    "type": "local",
+                    "path": "testing/subdirectory"
+                },
+                {
+                    "type": "local",
+                    "path": "testing/subdirectory/random_file.txt"
+                },
+                {
+                    "type": "local",
+                    "path": "testing/entry_ids.txt"
+                },
+                {
+                    "type": "local",
+                    "path": "testing/length_test.txt"
+                },
+                {
+                    "type": "local",
+                    "path": "testing/lorem_ipsum1.txt"
+                },
+                {
+                    "type": "local",
+                    "path": "testing/lorem_ipsum2.txt"
+                },
+                {
+                    "type": "local",
+                    "path": "testing/"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "18"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "4"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "16"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "17"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "15"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "24"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "26"
+                },
+                {
+                    "type": "remote",
+                    "repositoryId": "r-0001d410ba56",
+                    "entryId": "25"
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "Max",
+                    "value": "100"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        },
+        {
+            "type": "LengthFilter",
+            "input_entries": [],
+            "parameters": [
+                {
+                    "name": "Length",
+                    "value": "1024"
+                },
+                {
+                    "name": "Operator",
+                    "value": "GTE"
+                }
+            ]
+        },
+        {
+            "type": "Print",
+            "input_entries": [],
+            "parameters": []
+        }
+    ]
+}

@@ -13,7 +13,7 @@ public final class App {
         try {
             System.out.println("Creating Scenario");
             // Execute processing scenario from example.json
-            ProcessingScenario scenario = new ProcessingScenario("example.json");
+            ProcessingScenario scenario = new ProcessingScenario("testing.json");
             try {
                 System.out.println("Executing Scenario");
                 scenario.executeScenario();

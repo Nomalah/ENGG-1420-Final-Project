@@ -14,7 +14,6 @@ public class LocalStorageElement implements StorageElement {
         if (!Files.exists(this.filePath)) {
             System.out.println("Error file doesn't exist");
         }
-
     }
 
     @Override
@@ -73,7 +72,10 @@ public class LocalStorageElement implements StorageElement {
         File files[] = this.filePath.toFile().listFiles();
         for (File childFile : files) {
             // Convert known files into localstoragelements
-            childStorageElements.add(new LocalStorageElement(childFile.getAbsolutePath()));
+            System.out.println(childFile.getAbsolutePath());
+            if (!this.filePath.toFile().getAbsolutePath().equals(childFile.getAbsolutePath())){
+                childStorageElements.add(new LocalStorageElement(childFile.getAbsolutePath()));
+            }
         }
         return childStorageElements; // Get all child files/folders
     }
